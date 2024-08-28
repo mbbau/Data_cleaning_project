@@ -33,3 +33,37 @@ As you can see, there is a naming inconsistency with "item7" and "item_7," causi
 And now, suppose you discover that many sales were registered twice, resulting in duplicate values. Upon removing these duplicates, the real total amount for "item7" turns out to be $5600, which is still higher than "item1". These two types of issues—naming inconsistencies and duplicate records—demonstrated in the previous simple example, can mislead decision-makers, potentially leading to incorrect business strategies and unforeseen consequences.
 
 Therefore, after any type of analysis, it's crucial that our data is accurate and reliable. This is why data cleaning is essential.
+
+## Creating the table we are going to use
+
+For this project, I am using Microsoft SQL Server and a dataset about World Layoffs, which you can find in the data folder. This dataset is provided by [Alex The Analyst](https://github.com/AlexTheAnalyst/MySQL-YouTube-Series/blob/main/layoffs.csv).
+
+The following code snippet creates a table in SQL Server and imports the data from the CSV file:
+
+```sql
+
+IF OBJECT_ID('dbo.layoffs', 'U') IS NOT NULL
+DROP TABLE dbo.layoffs
+
+CREATE TABLE layoffs (
+    company VARCHAR(100),
+    location VARCHAR(100),
+    industry VARCHAR(100),
+    total_laid_off VARCHAR(100) NULL,
+    percentage_laid_off VARCHAR(100) NULL,
+    date VARCHAR(100),
+    stage VARCHAR(100),
+    country VARCHAR(100),
+    funds_raised_millions VARCHAR(100)
+)
+
+BULK INSERT layoffs
+FROM 'C:\Users\usuario\Documents\Matias\Proyectos personales\Data_cleaning_project\data\layoffs.csv'
+WITH (
+    FIELDTERMINATOR = ',',  
+    ROWTERMINATOR = '\n',   
+    FIRSTROW = 2            
+)
+
+```
+
