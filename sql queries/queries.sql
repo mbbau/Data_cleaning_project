@@ -32,14 +32,19 @@ SELECT * FROM layoffs;
 WITH duplicate_cte AS (
     SELECT *,
         ROW_NUMBER() OVER (
-            PARTITION BY company, industry, total_laid_off, percentage_laid_off, date 
+            PARTITION BY company, 'location', industry, total_laid_off, percentage_laid_off, date, stage, country, funds_raised_millions  
 			ORDER BY (SELECT NULL)  
         ) AS row_num
     FROM layoffs_staging
 )
-SELECT *
-FROM duplicate_cte
-WHERE row_num > 1;
+
+SELECT 
+  *
+FROM 
+  duplicate_cte
+WHERE 
+  row_num > 1;
+
 
 SELECT 
     company, 
@@ -60,3 +65,38 @@ GROUP BY
 	percentage_laid_off
 HAVING 
     COUNT(*) > 1;  -- Mostrar solo los grupos que tienen más de una ocurrencia
+
+
+-- Delete the duplicate rows
+DELETE
+FROM duplicate_cte
+WHERE row_num > 1;
+
+UPDATE layoffs_staging
+SET company = TRIM(company)
+
+UPDATE layoffs_staging
+SET 
+  indystry = 'Crypto'
+WHERE
+  industry LIKE 'Crypto%';
+
+SELECT 
+  DISTINCT status
+FROM 
+  sales
+WHERE
+  status NOT IN ('Shipped', 'Delivered', 'Pending', 'Returned');
+
+UPDATE sales
+SET status = CASE
+    WHEN status IN ('Shipped ', 'shipped') THEN 'Shipped'
+    WHEN status IN ('delivered', 'Deliverd') THEN 'Delivered'
+    WHEN status IN ('pendin', 'pendding') THEN 'Pending'
+    WHEN status IN ('Returnd', 'Rturn') THEN 'Returned'
+    ELSE status
+END;
+
+UPDATE layoffs_staging
+SET 
+  status = TRIM(status);
