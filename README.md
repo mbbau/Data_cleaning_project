@@ -2,7 +2,18 @@
 
 In this repository, you'll find a guide to data cleaning and manipulation using SQL. We'll explore why data cleaning is crucial for any data-driven project, the common challenges faced in the process, and various SQL techniques to effectively clean and prepare data.
 
-## Why is Data Cleaning Important?
+# Table of Contents
+
+1. [Why is Data Cleaning Important?](#why-is-data-cleaning-important)
+2. [Creating the table we are going to use](#creating-the-table-we-are-going-to-use)
+3. [Normalization and Standardization](#normalization-and-standardization)
+4. [Missing or Null Values](#missing-or-null-values)
+5. [Tests and Validation with dbt](#tests-and-validation-with-dbt)
+6. [Conclusion](#conclusion)
+
+
+
+# Why is Data Cleaning Important
 
 Data cleaning is crucial for ensuring accurate analysis and better decision-making. Consider a scenario where you are analyzing your best-selling products from the last quarter. To do this, you might perform a simple calculation by grouping the total sales amount for each product:
 
@@ -322,3 +333,35 @@ SET column_name = 'Unknown'
 WHERE column_name IS NULL;
 
 ```
+
+## Tests and Validation with dbt
+
+"[dbt](https://www.getdbt.com/)  is an open source command-line tool that is becoming increasingly popular in the data analytics industry because it simplifies and streamlines the process of data transformation and modeling."
+— *Rui Machado & Hélder Russa*, [Analytics Engineering with SQL and dbt](https://www.oreilly.com/library/view/analytics-engineering-with/9781098142377/).
+
+If your intention is to automate the process of generating the dataset, you will not only need to clean your data before any analysis, but also you should put tests in place to identigy when things break before anyone else does (imagine a BLANK value entering one of your dimension tables for example). Considering this, dbt has built in data tests that you can use. Becasue this repository is not intended to be an extensive resource on dbt, we will only mention the generic tests that align with what we have covered until now. With dbt generic tests, you will be able to cover several important topics such as:
+
+* **unique test**: Verifies that every value in a specific column is unique.
+
+```yaml
+
+models:
+  - name: stg_jaffle_shop_customers
+    config:
+      materialized: view
+    columns:
+      - name: customer_id
+        tests:
+        - unique
+        - not_null
+
+```
+
+* **not_null test**: Verifies that every value in a specific column is not null.
+
+* **acepted_values test**: Verifies that every value in a specific column exists in a given predefined list.
+
+* **relationships test**: Ensures that ever value in a specific column exists in a column in another model, and so we grant referential integrity.
+
+
+## Conclusion
