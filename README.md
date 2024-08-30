@@ -365,3 +365,9 @@ models:
 
 
 ## Conclusion
+
+Data cleaning is a fundamental step in any data analysis process, ensuring that the data is accurate, consistent, and reliable. Throughout this project, we explored various data cleaning techniques, including removing duplicates, normalization and standardization, handling missing or null values, and validating data against predefined lists. These steps are essential to improve data quality and ensure meaningful insights.
+
+By leveraging SQL and tools like dbt, we have demonstrated how to implement automated validation tests and ensure the integrity of our data models. This approach not only helps maintain a high standard of data quality but also enables the data team to work more efficiently and confidently.
+
+In summary, proper data cleaning lays the foundation for effective data analysis, modeling, and decision-making. As the volume of data continues to grow, adopting robust data cleaning and validation practices becomes increasingly critical to harnessing the true value of data.
