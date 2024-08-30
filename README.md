@@ -1,6 +1,6 @@
 # Data cleaning project
 
-In this repository, you'll find a comprehensive guide to data cleaning and manipulation using SQL. We'll explore why data cleaning is crucial for any data-driven project, the common challenges faced in the process, and various SQL techniques to effectively clean and prepare data.
+In this repository, you'll find a guide to data cleaning and manipulation using SQL. We'll explore why data cleaning is crucial for any data-driven project, the common challenges faced in the process, and various SQL techniques to effectively clean and prepare data.
 
 ## Why is Data Cleaning Important?
 
@@ -149,9 +149,9 @@ If we compare this SQL code to the same code in M language that means to achieve
   )
 
 ```
-So, why if it is so simple in M, we want to do this in SQL? This is because we want to make all the transformations as close to source of the data as posible, in order to fully leverage the compute power of the Data Base.
+So, why if it is so simple in M, we want to do this in SQL? This is because we want to make all the transformations as close to source of the data as possible, in order to fully leverage the compute power of the Data Base.
 
-## Normalization and Standardization
+### Normalization and Standardization
 
 As mentioned in the introduction, having consistency and clarity with the values in every column is vital to achieve the best results possible in our analysis.
 
@@ -292,3 +292,33 @@ SET
 
 ```
 
+
+### Missing or Null Values
+
+In the case of Null Values, you will find three possible course of actions to take, based on the particular case of the Null you are facing. 
+
+![Null Values Course of Action](image.png)
+
+As can be seen in the previous image, at first, you would face three posible options: 
+
+1. **Ignore the NULL Values**: In some cases, Null values could be important, like in surveys, and you would want to analyze them in the future data analysis as an important part of the dataset.
+
+2. **Delete the respective Row or Column**: In other cases, having the Null Value will diminish the usefulness of the record (in the case that this Null value can be inputed with a proper technique). When this happens, you will be probably be better of without that record in your dataset, given the fact that removing this Rows won't reduce the size of your data considerably, to a point where the data will lose its worth. If most Null Values are concentrated in a single column, and you still can work with the data located on the other Columns, you will probably be able to remove that entire Column, after a thoughtful revision.
+
+3. **Input The Null Values**: By Inputing the Null Values, you are manually adding data that was not in the table in the first place. The inputing technique will depend on the kind of data you are working on (numerical or categorical), and also, on the availability of external sources of information that can help you (an adjacent table that has the needed information). In the case of a numerical type column, you will be able to use statistical tools to for the input, such as The column Average or Mode, to name a few. In other cases, information from other similar rows can be helpful to input Null values. Up next, you will be able to see different kind of input methods based on particular cases.
+
+```sql 
+--- updating with column Average
+UPDATE table_name
+SET column_name = (SELECT AVG(column_name) FROM table_name)
+WHERE column_name IS NULL;
+
+```
+
+```sql 
+--- Replacing NULL values with a specific and known value.
+UPDATE table_name
+SET column_name = 'Unknown'
+WHERE column_name IS NULL;
+
+```
